@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Hagiell Cleaner Pro</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://via.placeholder.com/50" alt="Logo" class="logo">
+            <h1>Hagiell Cleaner</h1>
+        </div>
+        
+        <div class="content">
+            <button id="clean-btn" class="glow-on-hover">
+                🧹 URUCHOM CZYSZCZENIE
+            </button>
+            <div id="status" class="status-box">
+                Gotowy do działania...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('clean-btn').addEventListener('click', () => {
+            document.getElementById('status').textContent = "Czyszczenie w toku...";
+            window.electronAPI.runClean();
+        });
+
+        window.electronAPI.onCleanDone((event, data) => {
+            const status = document.getElementById('status');
+            status.textContent = data.success 
+                ? "✅ Wyczyszczono!\n" + data.output
+                : "❌ Błąd!\n" + data.output;
+            status.className = data.success ? "status-box success" : "status-box error";
+        });
+    </script>
+</body>
+</html>
